@@ -1,0 +1,16 @@
+zone,shift,v,c,lift
+press_shop,night,279,5,3.790352504638219
+chemical_store,night,88,4,1.461195230780484
+assembly_line,night,84,4,1.3947772657450077
+press_shop,evening,82,4,1.3615682832272693
+assembly_line,evening,97,5,1.317792806272069
+warehouse,morning,93,5,1.2634508348794062
+warehouse,night,97,6,1.1150554514609814
+assembly_line,morning,84,6,0.9656150301311592
+warehouse,evening,86,7,0.8567917489576475
+chemical_store,evening,108,9,0.8494508159800422
+welding_bay,evening,84,8,0.73841149362971
+welding_bay,morning,83,8,0.7296208806103086
+welding_bay,night,81,8,0.712039654571506
+chemical_store,morning,93,11,0.6042590949423248
+press_shop,morning,80,16,0.3622798092844176

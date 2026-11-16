@@ -1,0 +1,2 @@
+concurrency,device,imgsz,images,detections,seconds,images_per_sec
+1,mps,1280,1625,14700,329.24,4.936

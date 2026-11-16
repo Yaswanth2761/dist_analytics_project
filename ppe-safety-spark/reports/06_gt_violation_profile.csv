@@ -1,0 +1,8 @@
+requirement,missing,not_visible,not_worn,partial,worn
+hearing_protection,644,634,2,0,18
+eye_protection,688,427,10,0,173
+foot_protection,20,1053,2,2,221
+head_protection,970,238,3,0,87
+respiratory,836,394,0,0,68
+hand_protection,861,276,12,2,147
+body_protection,1224,0,0,0,74

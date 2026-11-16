@@ -1,0 +1,5 @@
+v1
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_person_risk/part-00001-ad82f603-4de6-4dfa-bfba-b569f65897ad-c000.snappy.parquet","timestamp":1794178399965,"batchId":1}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_person_risk/part-00000-ad82f603-4de6-4dfa-bfba-b569f65897ad-c000.snappy.parquet","timestamp":1794178399965,"batchId":1}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_person_risk/part-00002-ad82f603-4de6-4dfa-bfba-b569f65897ad-c000.snappy.parquet","timestamp":1794178400018,"batchId":1}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_person_risk/part-00003-ad82f603-4de6-4dfa-bfba-b569f65897ad-c000.snappy.parquet","timestamp":1794178400018,"batchId":1}

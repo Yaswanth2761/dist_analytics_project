@@ -1,0 +1,13 @@
+{
+  "images": 8099,
+  "unreadable_images": 0,
+  "duplicate_image_ids": 0,
+  "exif_rotated_images": 0,
+  "label_lines": 75994,
+  "label_issues": {
+    "ok": 75994
+  },
+  "label_formats": {
+    "bbox": 75994
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "images": 8099,
+  "boxes": 75993,
+  "boxes_per_image_p50_p90_p99_max": [
+    7.0,
+    18.0,
+    39.0,
+    154.0
+  ],
+  "images_without_labels": 0,
+  "too_small_boxes": 1,
+  "exact_duplicate_boxes": 0,
+  "near_duplicate_pairs": 14,
+  "images_in_dup_groups": 28,
+  "orphan_label_files": 0,
+  "split_sizes": {
+    "val": 807,
+    "train": 6474,
+    "test": 818
+  },
+  "dup_groups_spanning_splits": 0
+}

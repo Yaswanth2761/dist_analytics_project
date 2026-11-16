@@ -1,0 +1,5 @@
+v1
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_zone_windows/part-00000-cc91e9e3-a50c-474b-801f-91fb9e00dbda-c000.snappy.parquet","size":921,"isDir":false,"modificationTime":1794178830360,"blockReplication":1,"blockSize":33554432,"action":"add"}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_zone_windows/part-00001-6e1315b9-1aca-4296-a51d-258a8e43e30a-c000.snappy.parquet","size":2389,"isDir":false,"modificationTime":1794178830480,"blockReplication":1,"blockSize":33554432,"action":"add"}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_zone_windows/part-00002-f3d9bedb-e906-4572-b857-fa62406ab1ea-c000.snappy.parquet","size":2396,"isDir":false,"modificationTime":1794178830594,"blockReplication":1,"blockSize":33554432,"action":"add"}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/lake/gold/stream_zone_windows/part-00003-59c126d7-19a4-43ab-bc43-082ce923ec58-c000.snappy.parquet","size":2375,"isDir":false,"modificationTime":1794178830702,"blockReplication":1,"blockSize":33554432,"action":"add"}

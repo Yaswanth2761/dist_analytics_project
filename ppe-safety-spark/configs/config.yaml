@@ -1,0 +1,124 @@
+# ---------------------------------------------------------------------------
+# PPE safety & risk analytics on SH17 — single source of truth for all stages.
+# Relative paths are resolved against the repository root.
+# ---------------------------------------------------------------------------
+paths:
+  raw_root: data/SH17            # SH17 repo download: contains images/ and labels/
+  official_split_dir: data/SH17  # optional train_files.txt / val_files.txt (if the repo ships them)
+  lake: lake                     # Parquet medallion tables: lake/bronze, lake/silver, lake/gold
+  yolo_root: data/yolo_sh17      # resized, YOLO-format export used for training/inference
+  runs: runs                     # Ultralytics + MLflow runs
+  models: models
+  reports: reports
+  stream: stream                 # streaming input/checkpoints
+
+spark:
+  app_name: ppe-safety
+  master: "local[*]"
+  driver_memory: 8g
+  shuffle_partitions: 32
+  arrow_batch_images: 32         # rows per Arrow batch for image UDFs -> bounds worker RAM (SH17 has 8K-px images)
+
+data:
+  image_glob: "*.{jpg,jpeg,png,JPG,JPEG,PNG}"
+  coord_tolerance: 0.002         # overshoot outside [0,1] tolerated (then clipped) before flagging a box
+  min_box_px: 2                  # boxes thinner than this in ORIGINAL pixels are dropped
+  phash_max_hamming: 6           # near-duplicate threshold on 64-bit pHash (<= 7 keeps the 8-band LSH exact)
+  use_official_split: false      # true -> respect train_files.txt / val_files.txt, carve test out of train
+  split: {train: 0.8, val: 0.1, test: 0.1}
+  seed: 42
+
+export:
+  long_side: 1600                # downscale once (originals are 1920–8192 px); train at imgsz <= this
+  jpeg_quality: 95
+  skip_existing: true
+  rfs_threshold: 0.10            # repeat-factor sampling threshold t (LVIS-style) for rare classes
+  rfs_max_repeat: 4
+  build_cctv_test: true          # degraded copy of the test split (blur/low light/noise/JPEG) for robustness eval
+  small_box_px: 8                # report share of boxes smaller than this at training resolution
+
+train:
+  model: yolov8m.pt              # try yolov8s.pt first if GPU memory is tight
+  imgsz: 1280                    # SH17 is dominated by small objects (ears, glasses, gloves) -> high res
+  epochs: 120
+  batch: 8
+  patience: 30
+  workers: 4
+  device: 0
+  close_mosaic: 15
+  mosaic: 1.0
+  mixup: 0.05
+  scale: 0.5
+  degrees: 0.0
+  fliplr: 0.5                    # safe: SH17 has no left/right-specific classes
+  hsv_v: 0.5                     # stronger brightness jitter -> closer to factory lighting
+  cos_lr: true
+  mlflow_experiment: sh17-ppe
+
+inference:
+  weights: models/best.pt
+  imgsz: 1280
+  conf: 0.25
+  iou: 0.6
+  max_det: 300                   # SH17 averages ~9 boxes/image but crowded scenes have many more
+  batch_size: 1
+  device: "mps"                    # "cpu" or a GPU index
+  half: false
+  concurrency: 1                 # Spark tasks in parallel = model replicas. 1 per GPU; >1 only for CPU/multi-GPU
+  splits: [val, test]            # analytics use unseen images; compliance metrics use test only
+  eval_split: test
+
+compliance:
+  person_ioa: 0.6                # part/PPE box must lie >= 60% inside a person box to belong to that person
+  min_person_area: 0.002         # ignore tiny/background persons (normalized area)
+  cover_overlap: 0.3             # overlap coefficient (inter / smaller box) for "this PPE covers this body part"
+  person_match_iou: 0.5          # pred person <-> GT person matching for compliance evaluation
+  # SH17 annotates body parts (head, face, ear, hands, foot) AND PPE, so compliance can be anchored on
+  # visible body parts instead of guessing: "head visible + no helmet on it" = violation.
+  requirements:
+    head_protection:    {ppe: [helmet], part: head, multi: false}
+    eye_protection:     {ppe: [glasses, face-guard], part: face, multi: false}
+    respiratory:        {ppe: [face-mask-medical, face-guard], part: face, multi: false}
+    hearing_protection: {ppe: [earmuffs], part: ear, multi: true}
+    hand_protection:    {ppe: [gloves], part: hands, multi: true}
+    foot_protection:    {ppe: [shoes], part: foot, multi: true}
+    body_protection:    {ppe: [safety-vest, safety-suit, medical-suit], part: null, multi: false}
+
+risk:
+  severity:
+    head_protection: 1.0
+    eye_protection: 0.7
+    respiratory: 0.6
+    hearing_protection: 0.5
+    hand_protection: 0.6
+    foot_protection: 0.6
+    body_protection: 0.4
+  status_weight: {missing: 1.0, not_worn: 1.0, partial: 0.5, worn: 0.0, not_visible: 0.0}
+  levels: {medium: 0.6, high: 1.5}
+  # Simulated plant context (SH17 has no cameras/zones/time) — state this clearly in the report.
+  zones:
+    welding_bay:    {hazard: 1.5, required: [head_protection, eye_protection, hand_protection, foot_protection, body_protection]}
+    chemical_store: {hazard: 1.4, required: [eye_protection, respiratory, hand_protection, body_protection]}
+    press_shop:     {hazard: 1.3, required: [head_protection, hearing_protection, hand_protection, foot_protection]}
+    assembly_line:  {hazard: 1.0, required: [eye_protection, hand_protection, foot_protection]}
+    warehouse:      {hazard: 0.8, required: [head_protection, foot_protection, body_protection]}
+  cameras_per_zone: 3
+  simulation:
+    start: "2026-10-01T00:00:00"
+    days: 5
+    seed: 7
+    # Planted pattern: violating images are over-assigned to this zone+shift. The analytics should recover it.
+    planted: {zone: press_shop, shift: night, strength: 3.0}
+  window: "2 hours"
+  anomaly: {lookback_windows: 12, z: 2.5, min_persons: 3}
+  kmeans_k: [2, 3, 4, 5]
+
+streaming:
+  trigger: "5 seconds"
+  window: "5 minutes"
+  slide: "1 minute"
+  watermark: "10 minutes"
+  sim_seconds_per_event: 10      # simulated clock speed
+  events_per_file: 8
+  file_interval_sec: 2
+  window_violation_rate_alert: 0.5

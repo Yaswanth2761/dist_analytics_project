@@ -1,0 +1,6 @@
+prediction,body_protection,eye_protection,foot_protection,hand_protection,head_protection,hearing_protection,respiratory,units
+1,0.945,0.356,0.008,0.4,0.926,0.0,0.0,86
+0,0.961,0.827,0.0,0.878,0.0,0.0,0.92,48
+2,0.03,0.804,0.015,0.887,0.018,0.0,0.0,48
+4,0.0,0.0,0.012,0.839,0.92,0.98,0.0,43
+3,0.464,0.363,0.742,0.71,0.879,0.401,0.0,12

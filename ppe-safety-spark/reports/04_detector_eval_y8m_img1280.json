@@ -1,0 +1,18 @@
+{
+  "run": "y8m_img1280",
+  "weights": "/scratch/mpcl/sudeshna_sarkar/yaswanth/distproject/ppe-safety-spark/runs/y8m_img1280/weights/best.pt",
+  "imgsz": 1280,
+  "test_clean": {
+    "map50": 0.707317611268256,
+    "map50_95": 0.4786026325376386,
+    "precision": 0.7339867969703651,
+    "recall": 0.6621850511838625
+  },
+  "test_cctv": {
+    "map50": 0.3173671583814027,
+    "map50_95": 0.1956154432106892,
+    "precision": 0.48868230929464207,
+    "recall": 0.3031838514079566
+  },
+  "map50_95_drop_under_cctv": 0.2829871893269494
+}

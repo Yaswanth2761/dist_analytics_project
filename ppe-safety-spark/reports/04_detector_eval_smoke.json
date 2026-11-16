@@ -1,0 +1,18 @@
+{
+  "run": "smoke",
+  "weights": "/scratch/mpcl/sudeshna_sarkar/yaswanth/distproject/ppe-safety-spark/runs/smoke/weights/best.pt",
+  "imgsz": 1280,
+  "test_clean": {
+    "map50": 0.34199862757383687,
+    "map50_95": 0.20231002979091206,
+    "precision": 0.6502527632453037,
+    "recall": 0.32483103493467097
+  },
+  "test_cctv": {
+    "map50": 0.17543375799769242,
+    "map50_95": 0.09515464089052748,
+    "precision": 0.5614800631860206,
+    "recall": 0.17703194900351377
+  },
+  "map50_95_drop_under_cctv": 0.10715538890038458
+}

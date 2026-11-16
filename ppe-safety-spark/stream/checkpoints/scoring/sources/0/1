@@ -1,0 +1,3 @@
+v1
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/stream/in/events_000002.json","timestamp":1794178045836,"batchId":1}
+{"path":"file:///Users/yaswanth/projects/ppe-safety-spark/stream/in/events_000003.json","timestamp":1794178047841,"batchId":1}

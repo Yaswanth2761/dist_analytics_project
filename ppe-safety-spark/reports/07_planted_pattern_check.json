@@ -1,0 +1,20 @@
+{
+  "planted": {
+    "zone": "press_shop",
+    "shift": "night",
+    "strength": 3.0
+  },
+  "top_cell": {
+    "zone": "press_shop",
+    "shift": "night",
+    "lift": 3.79
+  },
+  "recovered": true,
+  "anomalous_windows": 1,
+  "kmeans_silhouette": {
+    "2": 0.4798915542992,
+    "3": 0.4970144570658021,
+    "4": 0.666852971805214,
+    "5": 0.7296836320516804
+  }
+}
